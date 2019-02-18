@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#locales").change(function(){
+                var selectedOpt = $('#locales').val();
+                if (selectedOpt!=''){
+                    window.location.replace('language?language='+selectedOpt);
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+
+<span th:text="#{language.choose}"></span>:
+<select id="locales">
+    <option value=""></option>
+    <option value="en" th:text="#{language.eng}"></option>
+    <option value="ru" th:text="#{language.ru}"></option>
+</select>
+
+</body>
+</html>
