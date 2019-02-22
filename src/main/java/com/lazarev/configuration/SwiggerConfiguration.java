@@ -1,7 +1,5 @@
 package com.lazarev.configuration;
 
-import org.apache.catalina.core.ApplicationContext;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -13,8 +11,6 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.paths.RelativePathProvider;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
-import javax.servlet.ServletContext;
 
 @Configuration
 @EnableSwagger2
@@ -33,6 +29,7 @@ public class SwiggerConfiguration extends WebMvcConfigurationSupport {
 
         return builder.build();
     }
+
     @Override
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("swagger-ui.html")
@@ -40,5 +37,13 @@ public class SwiggerConfiguration extends WebMvcConfigurationSupport {
 
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
+
+
+        registry.addResourceHandler("/css/**")
+                .addResourceLocations("classpath:/static/css/");
+
+        registry.addResourceHandler("/js/**")
+                .addResourceLocations("classpath:/static/js/");
+
     }
 }

@@ -6,24 +6,63 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@Table(name = "comments")
 public class Comment {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
-    //ref
-//    private User user;
-
-    @Column(length = 300)
+    private User user;
     private String text;
-
-    @CreatedDate
     private Date commentDate;
-
-    //ref to product
-//    private Product product;
+    private Product product;
 
     public Comment() {
+    }
+
+    @Id
+    @Column(name = "comment_id")
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    @Column(length = 300)
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    @CreatedDate
+    public Date getCommentDate() {
+        return commentDate;
+    }
+
+    public void setCommentDate(Date commentDate) {
+        this.commentDate = commentDate;
+    }
+
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 }

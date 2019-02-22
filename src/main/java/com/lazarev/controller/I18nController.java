@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class I18nController {
-    @RequestMapping({"/language","/I18n"})
+    @RequestMapping({"/language", "/I18n"})
     public String getInternationalPage() {
         return "language";
     }

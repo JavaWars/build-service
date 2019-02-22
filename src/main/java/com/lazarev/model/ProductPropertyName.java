@@ -6,14 +6,29 @@ import java.util.Objects;
 @Entity
 public class ProductPropertyName {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
-    @Column(unique=true)
     private String name;
 
     public ProductPropertyName() {
+    }
+
+    @Id
+    @Column(name = "product_property_name_id")
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    @Column(unique=true)
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
