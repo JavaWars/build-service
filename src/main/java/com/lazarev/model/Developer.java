@@ -1,9 +1,13 @@
 package com.lazarev.model;
 
+import com.fasterxml.jackson.annotation.*;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 @Entity
 @Table(name = "developers")
@@ -13,15 +17,19 @@ public class Developer {
     private String adress;
     private String phone;
     private Date foundation;
+    @JsonIgnore
     private Service service;
-    private Set<User> developerAdminsSquade;
-    private Set<Product> products;
-    private Set<Activity> activities;    //services provided by developer
+    @JsonIgnore
+    private Set<User> developerAdminsSquade=new HashSet<>();
+    @JsonIgnore
+    private Set<Product> products=new HashSet<>();
+    @JsonIgnore
+    private Set<Activity> activities=new TreeSet<>();    //services provided by developer
 
     public Developer() {
     }
 
-    @Id    @GeneratedValue
+    @Id    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "developer_id")
     public long getId() {
         return id;
@@ -57,8 +65,8 @@ public class Developer {
         this.foundation = foundation;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JoinColumn(name = "service_id")//, insertable = false, updatable = false
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "service_id")
     public Service getService() {
         return service;
     }
@@ -67,8 +75,11 @@ public class Developer {
         this.service = service;
     }
 
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")//, insertable = false, updatable = false
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "developer_admin",
+            joinColumns = { @JoinColumn(name = "developer_id") },
+            inverseJoinColumns = { @JoinColumn(name = "user_id") }
+    )
     public Set<User> getDeveloperAdminsSquade() {
         return developerAdminsSquade;
     }
@@ -77,12 +88,8 @@ public class Developer {
         this.developerAdminsSquade = developerAdminsSquade;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "Developer_Product",
-            joinColumns = { @JoinColumn(name = "product_id") },
-            inverseJoinColumns = { @JoinColumn(name = "developer_id") }
-    )
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "developer")
+//    @JoinColumn(name = "product_id")
     public Set<Product> getProducts() {
         return products;
     }
@@ -91,7 +98,7 @@ public class Developer {
         this.products = products;
     }
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "activity_id")
     public Set<Activity> getActivities() {
         return activities;
@@ -99,5 +106,19 @@ public class Developer {
 
     public void setActivities(Set<Activity> activities) {
         this.activities = activities;
+    }
+
+    @Override
+    public String toString() {
+        return "Developer{" +
+                "id=" + id +
+                ", adress='" + adress + '\'' +
+                ", phone='" + phone + '\'' +
+                ", foundation=" + foundation +
+                ", service=" + service +
+                ", developerAdminsSquade=" + developerAdminsSquade +
+                ", products=" + products +
+                ", activities=" + activities +
+                '}';
     }
 }

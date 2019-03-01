@@ -1,5 +1,9 @@
 package com.lazarev.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -10,15 +14,17 @@ import java.util.Date;
 public class Comment {
 
     private long id;
+    @JsonIgnore
     private User user;
     private String text;
     private Date commentDate;
+    @JsonIgnore
     private Product product;
 
     public Comment() {
     }
 
-    @Id
+    @Id @GeneratedValue
     @Column(name = "comment_id")
     public long getId() {
         return id;
@@ -37,7 +43,7 @@ public class Comment {
         this.text = text;
     }
 
-    @CreatedDate
+//    @CreatedDate
     public Date getCommentDate() {
         return commentDate;
     }

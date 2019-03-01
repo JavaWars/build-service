@@ -1,6 +1,13 @@
 package com.lazarev.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -11,17 +18,30 @@ public class User {
     private Role role;
     private String name;
     private String secondName;
+    @JsonIgnore
     private String password;
     private String email;
     private String adress;//can be changed to Adress
     private String phone;
-
-    private List<Order> userOrders;
+    @JsonIgnore
+    private List<TransactionOrder> userOrders;
 
     public User() {
     }
 
-    @Id
+    public User(User u) {
+        this.setRole(u.getRole());
+        this.setEmail(u.getEmail());
+        this.setPhone(u.getPhone());
+        this.setPassword(u.getPassword());
+        this.setName(u.getName());
+        this.setAdress(u.getAdress());
+        this.setId(u.getId());
+        this.setSecondName(u.getSecondName());
+        this.setUserOrders(u.getUserOrders());
+    }
+
+    @Id @GeneratedValue
     @Column(name = "user_id")
     public long getId() {
         return id;
@@ -32,7 +52,8 @@ public class User {
     }
 
     @Enumerated(EnumType.STRING)
-    @Column(length = 5)
+    @Column(length = 7)
+    @NotNull(message = "no role")
     public Role getRole() {
         return role;
     }
@@ -41,6 +62,7 @@ public class User {
         this.role = role;
     }
 
+    @NotEmpty(message = "name cant be empty")
     public String getName() {
         return name;
     }
@@ -57,6 +79,7 @@ public class User {
         this.secondName = secondName;
     }
 
+    @NotEmpty(message = "password cant be empty")
     public String getPassword() {
         return password;
     }
@@ -65,6 +88,9 @@ public class User {
         this.password = password;
     }
 
+    @NotEmpty(message = "email is empty")
+    @Column(name = "email",unique = true)
+    @org.hibernate.validator.constraints.Email(message = "Invalid Email")
     public String getEmail() {
         return email;
     }
@@ -81,6 +107,7 @@ public class User {
         this.adress = adress;
     }
 
+    @Column(name = "phone",unique = true)
     public String getPhone() {
         return phone;
     }
@@ -90,12 +117,12 @@ public class User {
     }
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
-    public List<Order> getUserOrders() {
+    @JoinColumn(name = "transaction_order_id")
+    public List<TransactionOrder> getUserOrders() {
         return userOrders;
     }
 
-    public void setUserOrders(List<Order> userOrders) {
+    public void setUserOrders(List<TransactionOrder> userOrders) {
         this.userOrders = userOrders;
     }
 }

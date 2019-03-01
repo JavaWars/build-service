@@ -1,9 +1,13 @@
 package com.lazarev.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
+@Table
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ProductPropertyName {
 
     private long id;
@@ -12,7 +16,7 @@ public class ProductPropertyName {
     public ProductPropertyName() {
     }
 
-    @Id
+    @Id @GeneratedValue
     @Column(name = "product_property_name_id")
     public long getId() {
         return id;

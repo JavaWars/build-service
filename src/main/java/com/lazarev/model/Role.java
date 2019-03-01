@@ -1,7 +1,8 @@
 package com.lazarev.model;
 
-enum Role {
+public enum Role {
     USER,
     ADMIN,
-    OWNER
+    SUPERADMIN,
+    DELETED
 }

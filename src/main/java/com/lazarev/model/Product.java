@@ -1,5 +1,7 @@
 package com.lazarev.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -13,19 +15,17 @@ public class Product {
     private long id;
     private String name;
     private double price;
-    private Set<Developer> developer;
+    @JsonIgnore
+    private Developer developer;
+    @JsonIgnore
     private Set<Category> categoryes;
+    @JsonIgnore
     private Map<ProductPropertyName, ProductPropertyValue> productDescription;
+    @JsonIgnore
     private List<Comment> comments;
-
+//orders for this product
     public Product() {
     }
-
-    public Product(String name, double price) {
-        this.name = name;
-        this.price = price;
-    }
-
 
     @Id    @GeneratedValue
     @Column(name = "product_id")
@@ -56,12 +56,13 @@ public class Product {
         this.price = price;
     }
 
-    @ManyToMany(mappedBy = "products",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    public Set<Developer> getDeveloper() {
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name = "developer_id")
+    public Developer getDeveloper() {
         return developer;
     }
 
-    public void setDeveloper(Set<Developer> developer) {
+    public void setDeveloper(Developer developer) {
         this.developer = developer;
     }
 

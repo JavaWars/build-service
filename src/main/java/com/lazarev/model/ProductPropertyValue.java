@@ -1,8 +1,12 @@
 package com.lazarev.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity
+@Table
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ProductPropertyValue {
 
     private long id;
