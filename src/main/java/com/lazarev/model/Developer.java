@@ -11,14 +11,14 @@ import java.util.TreeSet;
 
 @Entity
 @Table(name = "developers")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Developer {
 
     private long id;
     private String adress;
     private String phone;
     private Date foundation;
-    @JsonIgnore
-    private Service service;
+
     @JsonIgnore
     private Set<User> developerAdminsSquade=new HashSet<>();
     @JsonIgnore
@@ -65,16 +65,6 @@ public class Developer {
         this.foundation = foundation;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "service_id")
-    public Service getService() {
-        return service;
-    }
-
-    public void setService(Service service) {
-        this.service = service;
-    }
-
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "developer_admin",
             joinColumns = { @JoinColumn(name = "developer_id") },
@@ -115,7 +105,6 @@ public class Developer {
                 ", adress='" + adress + '\'' +
                 ", phone='" + phone + '\'' +
                 ", foundation=" + foundation +
-                ", service=" + service +
                 ", developerAdminsSquade=" + developerAdminsSquade +
                 ", products=" + products +
                 ", activities=" + activities +

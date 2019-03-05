@@ -1,19 +1,48 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Title</title>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v3.8.5">
+    <title>Carousel Template · Bootstrap</title>
 
-    <link href="webjars/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet"/>
+    <!--<link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/carousel/">-->
 
-    <script src="js/hi.js"></script>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-</head>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="chrome-extension://aggiiclaiamajehmlfpkjmlbadmkledi/popup.js" async=""></script><script type="text/javascript" src="chrome-extension://aggiiclaiamajehmlfpkjmlbadmkledi/tat_popup.js" async=""></script></head>
+
 <body>
-<h4>Welcome at the index page!</h4>
-<div class="container">
-    <button type="button" onclick="myFunction();" class="btn-primary">Button</button>
-    <p id="demo">hi bootstrap</p>
-</div>
-</body>
-</html>
+
+<!--NAVIGATION-->
+<div th:replace="fragments/navigation :: navigation"></div>
+
+<main role="main">
+
+    <!--CAROUSEL-->
+    <div th:replace="fragments/main_page_carousel :: carousel"></div>
+
+    <!--PRODUCTS-->
+    <div th:replace="fragments/main_page_products :: popular_products"></div>
+
+        <!--<p>New Item</p>-->
+        <!--<div class="row col-lg-2">-->
+        <!--</div>-->
+
+        <!--<p>Most popular activity</p>-->
+        <!--<div class="row col-lg-2">-->
+        <!--</div>-->
+
+    </div><!-- /.container -->
+
+    <!-- FOOTER -->
+    <div th:replace="fragments/footer :: footer"></div>
+
+</main>
+
+</body></html>

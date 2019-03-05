@@ -30,9 +30,6 @@ public class UserService implements UserDetailsService {
         return optionalUsers
                 .map(CustomUserDetails::new).get();
 
-//        User user = userRepository.findByEmail(username);
-//        if (userRepository==null) throw new UsernameNotFoundException("Username not found");
-//        return new CustomUserDetails(user);
     }
 
     public void insertNewUser(User u){

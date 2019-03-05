@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class I18nController {
     @RequestMapping(value = {"/language", "/I18n"},method = RequestMethod.GET)
     public String getInternationalPage() {
-        return "language";
+        return "common_pages/language";
     }
 }

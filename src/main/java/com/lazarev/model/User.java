@@ -52,7 +52,7 @@ public class User {
     }
 
     @Enumerated(EnumType.STRING)
-    @Column(length = 7)
+    @Column(length = 10)
     @NotNull(message = "no role")
     public Role getRole() {
         return role;

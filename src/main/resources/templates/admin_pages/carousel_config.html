@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>Spring Boot File Upload</title>
+
+</head>
+<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+
+    function updatePage() {
+        location.reload();
+    }
+
+    function deleteCarouselImage(imgId) {
+        console.log("image with id wille be deleted id="+imgId);
+        $.ajax({
+            type : "DELETE",
+            url : "/api/memory_img/"+imgId,
+            headers : {
+                "Content-Type" : "application/json"
+            },
+            success : function(data) {
+                content.reload();
+            },
+            error : function(data) {
+                alert("error"+data);
+            }
+        });
+        ;
+    }
+
+    function createNewLogoOnRegistrationPage() {
+
+
+
+    }
+
+</script>
+<body>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">#Id</th>
+        <th scope="col">FileName</th>
+        <th scope="col">Path</th>
+        <th scope="col">StorageType</th>
+        <th scope="col">Options</th>
+        <th scope="col">image</th>
+
+    </tr>
+    </thead>
+    <tbody >
+    <tr th:each="element : ${carousel_elements}">
+        <th scope="row" th:text="${element.id}"></th>
+        <td th:text="${element.fileName}"></td>
+        <td th:text="${element.filePath}"></td>
+        <td th:text="${element.storageType}"></td>
+        <td>
+            <button th:onclick="@{${'deleteCarouselImage('+ element.id+')'}}">Delete</button>
+        </td>
+        <td><img th:src="@{${'/api/memory_img/'+ element.id}}"></td>
+    </tr>
+    </tbody>
+</table>
+<noscript>
+    <h2>Sorry! Your browser doesn't support Javascript</h2>
+</noscript>
+<div class="upload-container">
+    <div class="upload-content">
+        <div class="single-upload">
+            <h3>Choose Carousel Image Files</h3>
+            <form method="post" action="/api/memory_img" enctype="multipart/form-data"
+                  id="singleUploadForm" name="singleUploadForm">
+                <input id="singleFileUploadInput" type="file" name="file" class="file-input" required />
+                <input type="submit" value="Upload" />
+                <button onclick="createNewLogoOnRegistrationPage()">Set logo</button>
+            </form>
+            <div class="upload-response">
+                <div id="singleFileUploadError"></div>
+                <div id="singleFileUploadSuccess"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
