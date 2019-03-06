@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class CategoryResolver {
 
-
     @ExceptionHandler(value = BuildServiceApplicationException.class)
     public ResponseEntity<String> applicationError(BuildServiceApplicationException exc){
-        return new ResponseEntity<String>(exc.getMessage(), HttpStatus.OK);
+        System.out.println("global application exception");
+        return new ResponseEntity<String>(exc.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(value = NoSuchCategory.class)
@@ -28,8 +28,4 @@ public class CategoryResolver {
         return new ResponseEntity<String>(exc.getMessage(), HttpStatus.OK);
     }
 
-    @ExceptionHandler(value = NoSuchUser.class)
-    public ResponseEntity<String> userError(NoSuchUser exc){
-        return new ResponseEntity<String>(exc.getMessage(), HttpStatus.OK);
-    }
 }

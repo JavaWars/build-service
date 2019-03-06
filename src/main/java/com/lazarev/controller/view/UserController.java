@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class UserController {
 
     @RequestMapping(value = "/users",method = RequestMethod.GET)
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    public String test() {
+    @PreAuthorize("hasAnyRole('SUPERADMIN')")
+    public String usersTotalInfo() {
         return "admin_pages/users";
     }
 

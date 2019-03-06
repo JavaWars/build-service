@@ -2,9 +2,7 @@ package com.lazarev.controller.view;
 
 import com.lazarev.model.File;
 import com.lazarev.repository.file.FileInfoDbStorage;
-import com.lazarev.service.file.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +23,7 @@ public class HomeController {
 
     @RequestMapping(value = "/registration",method = RequestMethod.GET)
     public String getRegistrationPage(Model model){
+        //// TODO: 06.03.2019 if user logined redirect
         File fInfo=fileInfo.getRegistrationLogo();
         if (fInfo!=null) {
             model.addAttribute("logo", fInfo);
@@ -34,6 +33,7 @@ public class HomeController {
 
     @RequestMapping(value = "/login",method = RequestMethod.GET)
     public String getLoginPage(Model model){
+        //// TODO: 06.03.2019 if user logined redirect
         File fInfo=fileInfo.getRegistrationLogo();
         if (fInfo!=null) {
             model.addAttribute("logo", fInfo);

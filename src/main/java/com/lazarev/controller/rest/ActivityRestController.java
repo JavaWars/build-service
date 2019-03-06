@@ -29,8 +29,7 @@ public class ActivityRestController {
     @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
     @RequestMapping(value = "/activities",method = RequestMethod.POST)
     public ResponseEntity<Object> insertActivities(Authentication authentication,@RequestBody Activity activity){
-        System.out.println(authentication.getName());
-        //check Activity.developer.id
+//        System.out.println(authentication.getName());
         //// TODO: 01.03.2019  check is admin for developer
         activitiesService.insert(activity);
         return new ResponseEntity<>("activity inserted",HttpStatus.OK);
@@ -40,7 +39,7 @@ public class ActivityRestController {
     @RequestMapping(value = "/activities",method = RequestMethod.PUT)
     public ResponseEntity<Object> updateActivities(Authentication authentication,@RequestBody Activity activity,Long activityId){
         System.out.println(authentication.getName());
-        //// TODO: 01.03.2019  check is admin for current user
+        //// TODO: 01.03.2019  check is admin for current developer
         activitiesService.insert(activity);
         return new ResponseEntity<>("activity updated",HttpStatus.OK);
     }
@@ -48,11 +47,10 @@ public class ActivityRestController {
     @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
     @RequestMapping(value = "/activities",method = RequestMethod.DELETE)
     public ResponseEntity<Object> deleteActivities(Authentication authentication, Long activityId){
-        //// TODO: 01.03.2019  check is admin for current user
+        //// TODO: 01.03.2019  check is admin for current developer
         System.out.println(authentication.getName());
         activitiesService.remove(activityId);
         return new ResponseEntity<>("activity deleted",HttpStatus.OK);
     }
-
 
 }

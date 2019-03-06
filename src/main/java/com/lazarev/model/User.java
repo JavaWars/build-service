@@ -8,17 +8,20 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User
+        implements Serializable //this Serializable need to save information about user
+                                //for spring security when devtools restart application
+{
 
     private long id;
     private Role role;
     private String name;
     private String secondName;
-    @JsonIgnore
     private String password;
     private String email;
     private String adress;//can be changed to Adress
@@ -79,6 +82,7 @@ public class User {
         this.secondName = secondName;
     }
 
+//    @JsonIgnore
     @NotEmpty(message = "password cant be empty")
     public String getPassword() {
         return password;
@@ -124,5 +128,20 @@ public class User {
 
     public void setUserOrders(List<TransactionOrder> userOrders) {
         this.userOrders = userOrders;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", role=" + role +
+                ", name='" + name + '\'' +
+                ", secondName='" + secondName + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", adress='" + adress + '\'' +
+                ", phone='" + phone + '\'' +
+                ", userOrders=" + userOrders +
+                '}';
     }
 }

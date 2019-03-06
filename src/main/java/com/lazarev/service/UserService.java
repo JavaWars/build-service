@@ -33,11 +33,16 @@ public class UserService implements UserDetailsService {
     }
 
     public void insertNewUser(User u){
-        if (userRepository.findByPhone(u.getPhone())==null
-                && userRepository.findByEmail(u.getEmail())==null) {
+        u.setRole(Role.USER);
+        System.out.println(u);
+
+        if (!userRepository.existsUserByEmailOrPhone(u.getEmail(),u.getPhone())) {
+            System.out.println("saving");
             userRepository.save(u);
         }
-        else throw new UserAlreadyExist("user is already in db");
+        else {
+            throw new UserAlreadyExist("user is already in db");
+        }
     }
 
     public User getById(Long id) {

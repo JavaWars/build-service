@@ -18,6 +18,10 @@ public class Developer {
     private String adress;
     private String phone;
     private Date foundation;
+    private String name;
+    private String story;
+    @JsonIgnore
+    private User founder;
 
     @JsonIgnore
     private Set<User> developerAdminsSquade=new HashSet<>();
@@ -25,6 +29,7 @@ public class Developer {
     private Set<Product> products=new HashSet<>();
     @JsonIgnore
     private Set<Activity> activities=new TreeSet<>();    //services provided by developer
+
 
     public Developer() {
     }
@@ -79,7 +84,6 @@ public class Developer {
     }
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "developer")
-//    @JoinColumn(name = "product_id")
     public Set<Product> getProducts() {
         return products;
     }
@@ -98,6 +102,33 @@ public class Developer {
         this.activities = activities;
     }
 
+//    @NotBlank
+    @OneToOne(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "user_id")
+    public User getFounder() {
+        return founder;
+    }
+
+    public void setFounder(User founder) {
+        this.founder = founder;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getStory() {
+        return story;
+    }
+
+    public void setStory(String story) {
+        this.story = story;
+    }
+
     @Override
     public String toString() {
         return "Developer{" +
@@ -105,9 +136,12 @@ public class Developer {
                 ", adress='" + adress + '\'' +
                 ", phone='" + phone + '\'' +
                 ", foundation=" + foundation +
+                ", name='" + name + '\'' +
+                ", story='" + story + '\'' +
                 ", developerAdminsSquade=" + developerAdminsSquade +
                 ", products=" + products +
                 ", activities=" + activities +
+                ", founder=" + founder +
                 '}';
     }
 }

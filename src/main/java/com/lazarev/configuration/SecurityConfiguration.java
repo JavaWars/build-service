@@ -29,7 +29,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .anyRequest().permitAll()
                 .and()
-                .formLogin().loginPage("/login").permitAll();
+                .formLogin().loginPage("/login").permitAll()
+//                .defaultSuccessUrl("/home", true)
+                .failureUrl("/error")
+                .loginProcessingUrl("/perform_login");
 
 //                .antMatchers(HttpMethod.PUT, "/api/user/").hasRole(Role.ADMIN.name())
 //                .antMatchers(HttpMethod.PUT, "/api/user/refresh").hasRole(Role.DELETED.name());

@@ -44,8 +44,10 @@ public class UserRestController {
         return new ResponseEntity<>("todo setting Role for user",HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('USER')")
     @RequestMapping(value = "/user",method = RequestMethod.DELETE)
     public ResponseEntity<Object> deleteUser(Long userId){
+        //// TODO: 06.03.2019  is it me
         userService.delete(userId);
         return new ResponseEntity<>("User deleted",HttpStatus.OK);
     }

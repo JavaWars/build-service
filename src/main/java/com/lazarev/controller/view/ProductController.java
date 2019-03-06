@@ -1,5 +1,6 @@
 package com.lazarev.controller.view;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,9 +19,10 @@ public class ProductController {
         return "common_pages/search_product";
     }
 
-    //    @PreAuthorize("hasAnyRole('SUPERADMIN','ADMIN')")
+    @PreAuthorize("hasAnyRole('SUPERADMIN','ADMIN')")
     @RequestMapping(value = {"/product_config"},method = RequestMethod.GET)
     public String get_ProductConfig(){
+        //// TODO: 06.03.2019 check is current user admin
         return "admin_pages/new_product";
     }
 
