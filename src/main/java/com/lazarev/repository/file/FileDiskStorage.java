@@ -15,7 +15,9 @@ public class FileDiskStorage implements FileDataStorage {
 
     @Override
     public String insert(MultipartFile multipartFile, com.lazarev.model.File fileInfo,String additionalPath) {
-        fileInfo.setStorageType("DISK");
+        if (fileInfo.getStorageType()==null) {
+            fileInfo.setStorageType("DISK");
+        }
 
         String filePathOnDisk=null;
 

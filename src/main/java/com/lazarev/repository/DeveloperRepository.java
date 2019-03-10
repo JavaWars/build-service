@@ -10,4 +10,18 @@ import org.springframework.stereotype.Repository;
 public interface DeveloperRepository extends JpaRepository<Developer,Long> {
 
     Developer findByPhone(String phone);
+
+    @Query(nativeQuery = true,
+            value = "select * from developers where user_id=? limit 1")
+    Developer findByUserId(Long id);
+
+    @Query(nativeQuery = true,
+            value = "delete from developer_admin where user_id=?;")
+    void deleteAdmin(long id);
+
+@Query(nativeQuery = true,
+value = "SELECT developers.* FROM developers , developer_admin\n" +
+        "WHERE  ( (developers.user_id=:id)or (developer_admin.user_id=:id) )\n" +
+        "GROUP BY developer_id\n")
+    Developer findByAdminOrOwner(long id);
 }

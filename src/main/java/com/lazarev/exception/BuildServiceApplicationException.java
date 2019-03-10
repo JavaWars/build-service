@@ -7,4 +7,5 @@ public class BuildServiceApplicationException extends RuntimeException {
     public BuildServiceApplicationException(String message) {
         super(message);
     }
+
 }

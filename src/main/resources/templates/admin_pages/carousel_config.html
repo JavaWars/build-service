@@ -30,14 +30,20 @@
         ;
     }
 
-    function createNewLogoOnRegistrationPage() {
-
-
-
-    }
-
 </script>
 <body>
+
+<div>
+    <h2>Images for u site (not original size)</h2>
+    <h4>Err Img</h4>
+    <img src="/api/memory_img/err" height="200" width="200">
+
+    <h4>Logo Img</h4>
+    <img src="/api/memory_img/logo"height="200" width="200">
+
+    <h4>Error access Img</h4>
+    <img src="/api/memory_img/err_access" height="200" width="200">
+</div>
 
 <table class="table">
     <thead>
@@ -74,8 +80,15 @@
             <form method="post" action="/api/memory_img" enctype="multipart/form-data"
                   id="singleUploadForm" name="singleUploadForm">
                 <input id="singleFileUploadInput" type="file" name="file" class="file-input" required />
+
+                <select name="logoType">
+                    <option value="MEMORY">MainPage Carousel Image</option>
+                    <option value="LOGO">Site logo</option>
+                    <option value="ERR">Error</option>
+                    <option value="ERR_ACCESS">Security Error</option>
+                </select>
+
                 <input type="submit" value="Upload" />
-                <button onclick="createNewLogoOnRegistrationPage()">Set logo</button>
             </form>
             <div class="upload-response">
                 <div id="singleFileUploadError"></div>

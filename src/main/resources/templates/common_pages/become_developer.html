@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Become developer</title>
@@ -7,73 +7,16 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script>
 
-        // /developers
-        function createDeveloper() {
-            console.log("developer create");
-            var developermodel = {
-                adress: "string",
-                name: "string",
-                phone: "string",
-                story: "string"
+    <script src="/js/become_developer.js"></script>
 
-                // adress: $("#address").val(),
-                // email: $("#email").val(),
-                // password: $("#password").val(),
-                // name: $("#name").val(),
-                // phone: $("#phone").val(),
-                // secondName: $("#last_name").val()
-            };
-            var requestJSON = JSON.stringify(developermodel);
-            $.ajax({
-                type: "POST",
-                url: "/api/developers",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                data: requestJSON,
-                success: function (data) {
-                    // window.location("/developer_management");
-                },
-                error: function (data) {
-                    alert("error" + data);
-                }
-            });
-            ;
-        }
-
-    </script>
 </head>
 <body>
 
+<div th:replace="fragments/developer_owner/developer_total :: developer_total"></div>
 
-<form onsubmit="createDeveloper()">
-    <div>
-        Create your own company and start make money
-    </div>
-    <div class="container">
-        <div>
-            Company Adress
-            <input type="text" maxlength="100" id="adress" value=""/>
-        </div>
-        <div>
-            Company phone
-            <input type="number" maxlength="15" id="phone" value=""/>
-        </div>
-        <div>
-            Company name
-            <input type="text" maxlength="60" id="name" value=""/>
-        </div>
-        <div>
-            Company short history
-            <input type="text" maxlength="200" id="story" value=""/>
-        </div>
-        <div>
-            <button type="submit" class="button btn-primary" >Submit</button>
-        </div>
-    </div>
-</form>
-
+<div>
+    <a href="/developer_management">Go To Developer Management Page</a>
+</div>
 </body>
 </html>

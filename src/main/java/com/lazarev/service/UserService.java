@@ -7,6 +7,8 @@ import com.lazarev.model.Role;
 import com.lazarev.model.User;
 import com.lazarev.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,13 +25,22 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        System.out.println("user service "+username);
         Optional<User> optionalUsers = userRepository.findByEmail(username);
 
         optionalUsers
                 .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
-        return optionalUsers
-                .map(CustomUserDetails::new).get();
+//        return optionalUsers
+//                .map(CustomUserDetails::new).get();
+        System.out.println(optionalUsers.get());
+        return new CustomUserDetails(optionalUsers.get());
 
+    }
+
+    public static User getCurrentUser(){//get current registered user
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User u = authentication == null ? null : (User) authentication.getPrincipal();
+        return u;
     }
 
     public void insertNewUser(User u){
@@ -99,5 +110,9 @@ public class UserService implements UserDetailsService {
         else{
             throw new NoSuchUser("no such user for refreshing");
         }
+    }
+
+    public List<User> findByParams(String email, String phone, String name) {
+        return userRepository.findAllByEmailOrPhoneOrName(email,phone,name);
     }
 }

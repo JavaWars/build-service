@@ -1,15 +1,14 @@
 package com.lazarev.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -28,6 +27,8 @@ public class User
     private String phone;
     @JsonIgnore
     private List<TransactionOrder> userOrders;
+    @JsonIgnore
+    private Developer d;//if user is admin => for this developer
 
     public User() {
     }
@@ -42,6 +43,7 @@ public class User
         this.setId(u.getId());
         this.setSecondName(u.getSecondName());
         this.setUserOrders(u.getUserOrders());
+        this.setD(u.getD());
     }
 
     @Id @GeneratedValue
@@ -82,12 +84,13 @@ public class User
         this.secondName = secondName;
     }
 
-//    @JsonIgnore
+    @JsonIgnore
     @NotEmpty(message = "password cant be empty")
     public String getPassword() {
         return password;
     }
 
+    @JsonProperty
     public void setPassword(String password) {
         this.password = password;
     }
@@ -128,6 +131,40 @@ public class User
 
     public void setUserOrders(List<TransactionOrder> userOrders) {
         this.userOrders = userOrders;
+    }
+
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinTable(name = "developer_admin",
+            joinColumns = { @JoinColumn(name = "user_id") },
+            inverseJoinColumns = { @JoinColumn(name = "developer_id") }
+    )
+    public Developer getD() {
+        return d;
+    }
+
+    public void setD(Developer d) {
+        this.d = d;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id &&
+                role == user.role &&
+                Objects.equals(name, user.name) &&
+                Objects.equals(secondName, user.secondName) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(adress, user.adress) &&
+                Objects.equals(phone, user.phone) &&
+                Objects.equals(userOrders, user.userOrders);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, role, name, secondName, password, email, adress, phone, userOrders);
     }
 
     @Override

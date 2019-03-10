@@ -14,8 +14,10 @@
         <div class="row justify-content-center">
             <div class="col-md-12 text-center">
                 <span class="display-1 d-block">oooooooooooops</span>
-                <img th:src="@{${'/api/carousel_image/'+ errorLogo?.id}}">
+                <!--error logo like data from model was set in controller-->
+                <img th:src="@{${'/api/memory_img/'+ errorLogo?.id}}">
                 <div class="mb-4 lead" ><span th:text="${errorMsg}"></span></div>
+                <div class="mb-4 lead" ><span th:text="${stackTrace}"></span></div>
                 <a href="/home" class="btn btn-link">Back to Home</a>
             </div>
         </div>

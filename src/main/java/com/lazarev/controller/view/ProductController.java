@@ -1,10 +1,14 @@
 package com.lazarev.controller.view;
 
+import com.lazarev.model.Product;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class ProductController {
@@ -22,9 +26,7 @@ public class ProductController {
     @PreAuthorize("hasAnyRole('SUPERADMIN','ADMIN')")
     @RequestMapping(value = {"/product_config"},method = RequestMethod.GET)
     public String get_ProductConfig(){
-        //// TODO: 06.03.2019 check is current user admin
-        return "admin_pages/new_product";
+        return "fragments/developer_for_admins/new_product";
     }
-
 
 }

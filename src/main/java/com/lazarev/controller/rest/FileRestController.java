@@ -1,7 +1,9 @@
 package com.lazarev.controller.rest;
 
+import com.lazarev.model.File;
 import com.lazarev.repository.file.FileInfoDbStorage;
 import com.lazarev.service.file.FileService;
+import com.lazarev.service.file.FileServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -36,6 +38,16 @@ public class FileRestController {
         return new ResponseEntity<Object>(memFileService.getById(fileInfoDbStorage.getRegistrationLogo().getId()).getValue(), HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/memory_img/err",method = RequestMethod.GET)
+    public ResponseEntity<Object> getErrImgFile(){
+        return new ResponseEntity<Object>(memFileService.getById(fileInfoDbStorage.findByStorageType("ERR").getId()).getValue(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/memory_img/err_access",method = RequestMethod.GET)
+    public ResponseEntity<Object> getErrorAccessImgFile(){
+        return new ResponseEntity<Object>(memFileService.getById(fileInfoDbStorage.findByStorageType("ERR_ACCESS").getId()).getValue(), HttpStatus.OK);
+    }
+
     @PreAuthorize("hasAnyRole('SUPERADMIN')")
     @RequestMapping(value = "/memory_img/{fileId}",method = RequestMethod.DELETE)
     public ResponseEntity<Object> deleteCarouselImgFile(@PathVariable("fileId")Long id){
@@ -46,15 +58,14 @@ public class FileRestController {
     @PreAuthorize("hasAnyRole('SUPERADMIN','ADMIN')")
     @RequestMapping(value = "/product_img",method = RequestMethod.POST)
     public ResponseEntity<Object> saveFileDeveloperProductImage(@RequestParam("file") MultipartFile file){
-        diskFileService.save(file);
+        diskFileService.save(file,new File());
         return new ResponseEntity<>("file was saved to disk", HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('SUPERADMIN')")
     @RequestMapping(value = "/memory_img",method = RequestMethod.POST)
-    public String saveFile(@RequestParam("file") MultipartFile file,String siteImgType){
-        //// TODO: 05.03.2019  different siteImgType
-        memFileService.save(file);
+    public String saveFile(@RequestParam("file") MultipartFile file,String logoType){
+        ((FileServiceImpl)memFileService).save(file,logoType);
         return "image saved in memory";
     }
 }

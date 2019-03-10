@@ -16,31 +16,23 @@
 <body>
 
 <!--NAVIGATION-->
-<div th:replace="fragments/navigation :: navigation"></div>
+<div th:replace="fragments/main_page/navigation :: navigation"></div>
 
 <main role="main">
 
     <!--CAROUSEL-->
-    <div th:replace="fragments/main_page_carousel :: carousel"></div>
+    <div th:replace="fragments/main_page/main_page_carousel :: carousel"></div>
 
     <!--POPULAR PRODUCT-->
-    <div th:replace="fragments/main_page_products :: popular_products"></div>
+    <div th:replace="fragments/main_page/main_page_products :: popular_products"></div>
 
     <!--NEW PRODUCTS-->
-    <div th:replace="fragments/main_page_last_products :: new_products"></div>
-
-        <!--<p>New Item</p>-->
-        <!--<div class="row col-lg-2">-->
-        <!--</div>-->
-
-        <!--<p>Most popular activity</p>-->
-        <!--<div class="row col-lg-2">-->
-        <!--</div>-->
+    <div th:replace="fragments/main_page/main_page_last_products :: new_products"></div>
 
     </div><!-- /.container -->
 
     <!-- FOOTER -->
-    <div th:replace="fragments/footer :: footer"></div>
+    <div th:replace="fragments/main_page/footer :: footer"></div>
 
 </main>
 

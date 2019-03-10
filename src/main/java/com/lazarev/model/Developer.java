@@ -1,13 +1,11 @@
 package com.lazarev.model;
 
 import com.fasterxml.jackson.annotation.*;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 @Entity
 @Table(name = "developers")
@@ -70,11 +68,16 @@ public class Developer {
         this.foundation = foundation;
     }
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "developer_admin",
-            joinColumns = { @JoinColumn(name = "developer_id") },
-            inverseJoinColumns = { @JoinColumn(name = "user_id") }
-    )
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "d")//{CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH},orphanRemoval=true
+//    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE,
+//            org.hibernate.annotations.CascadeType.DELETE,
+//            org.hibernate.annotations.CascadeType.MERGE,
+//            org.hibernate.annotations.CascadeType.PERSIST,
+//            org.hibernate.annotations.CascadeType.DELETE_ORPHAN})
+//    @JoinTable(name = "developer_admin",
+//            joinColumns = { @JoinColumn(name = "developer_id") },
+//            inverseJoinColumns = { @JoinColumn(name = "user_id") }
+//    )
     public Set<User> getDeveloperAdminsSquade() {
         return developerAdminsSquade;
     }
@@ -103,7 +106,7 @@ public class Developer {
     }
 
 //    @NotBlank
-    @OneToOne(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     public User getFounder() {
         return founder;
@@ -129,6 +132,23 @@ public class Developer {
         this.story = story;
     }
 
+    public void addAdmin(User u){developerAdminsSquade.add(u);}
+
+    public void removeAdmin(User u){developerAdminsSquade.remove(u);}
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Developer developer = (Developer) o;
+        return id == developer.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
     @Override
     public String toString() {
         return "Developer{" +
@@ -138,10 +158,7 @@ public class Developer {
                 ", foundation=" + foundation +
                 ", name='" + name + '\'' +
                 ", story='" + story + '\'' +
-                ", developerAdminsSquade=" + developerAdminsSquade +
-                ", products=" + products +
                 ", activities=" + activities +
-                ", founder=" + founder +
                 '}';
     }
 }

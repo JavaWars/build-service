@@ -28,7 +28,9 @@ public class FileMemoryStorage implements FileDataStorage {
 
         String savePathLocation=fileDiskStorage.insert(multipartFile,fileInfo,additionalDirPath);
 
-        fileInfo.setStorageType("MEMORY");
+        if (fileInfo.getStorageType()==null) {//is already defined like ERR, LOGO, ERR_ACCESS
+            fileInfo.setStorageType("MEMORY");
+        }
 
         try {
             data.put(fileInfo.getId(), multipartFile.getBytes());
@@ -61,7 +63,7 @@ public class FileMemoryStorage implements FileDataStorage {
     }
 
     public void startupLoading(List<Pair<Long,byte[]> > startupData) {
-
+        System.out.println(startupData.size());
         for (Pair<Long,byte[]> el:startupData){
             data.put(el.getKey(),el.getValue());
         }

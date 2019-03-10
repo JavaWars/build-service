@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductPropertyValueRepository extends JpaRepository<ProductPropertyValue,Long> {
 
+    ProductPropertyValue findByProductValue(String s);
 }

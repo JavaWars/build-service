@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+
+
+<form onsubmit="createDeveloper()" th:fragment="developer_total">
+    <div>
+        Create your own company and start make money
+    </div>
+    <div class="container">
+        <div>
+            Company Adress
+            <input type="text" id="address" maxlength="100" th:value="@{${developerInfo?.adress}}"/>
+        </div>
+        <div>
+            Company phone
+            <input type="number" maxlength="15" id="phone" th:value="@{${developerInfo?.phone}}"/>
+        </div>
+        <div>
+            Company name
+            <input type="text" maxlength="60" id="name" th:value="@{${developerInfo?.name}}"/>
+        </div>
+        <div>
+            Company short history
+            <input type="text" maxlength="200" id="story" th:value="@{${developerInfo?.story}}"/>
+        </div>
+        <div>
+            <button type="submit" class="button btn-primary" >Submit</button>
+        </div>
+    </div>
+</form>
+
+</body>
+</html>

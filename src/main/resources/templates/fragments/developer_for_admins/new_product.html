@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Title</title>
+    <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">-->
+
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script src="/js/new_product.js"></script>
+
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div><ul class="nav nav-tabs col-lg-12" role="tablist">
+            <li class="active"><a href="#Product_main" role="tab" data-toggle="tab">Main</a></li>
+            <li class=""><a href="#Product_Images" role="tab" data-toggle="tab">Images</a></li>
+        </ul></div>
+        <div class="clearfix"></div>
+        <div class="Product_Content tab-content">
+            <div id="Product_main" class="tab-pane active">
+
+                <div class="col-lg-12 form-group margin50">
+                    <label class="col-lg-2"  for="Name">Product Name</label>
+                    <div class="col-lg-4">
+                        <input type="text" id="name" name="name" placeholder="" class="form-control name">
+                    </div>
+                </div>
+                <div class="col-lg-12 form-group">
+                    <label class="col-lg-2" for="Price">Price</label>
+                    <div class="col-lg-4">
+                        <input name="price" type="number" step=0.01 id="price" placeholder="" class="form-control price">
+                    </div>
+                </div>
+                <div class="col-lg-12 form-group">
+                    <label class="col-lg-2" for="Price">Product Description</label>
+                    <div class="col-lg-4">
+                        <textarea class="form-control description" name="description" id="description"></textarea>                            </div>
+                </div>
+
+                <div class="col-lg-12 form-group">
+                    <label class="col-lg-6">Table Of Product Properties</label>
+                    <table class="table table-sm table-sm" id ="myProductProperties">
+                        <thead>
+                        <tr class="table-active">
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Value</th>
+                            <th scope="col">Option</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-lg-12 form-group">
+                    <label class="col-lg-2">New Product Property Name</label>
+                    <input name="newPropertyName" id="newPropertyName">
+                </div>
+
+                <div class="col-lg-12 form-group">
+                    <label class="col-lg-2">New Product Property Value</label>
+                    <input name="newPropertyValue" id="newPropertyValue">
+                </div>
+
+                <div class="col-lg-12 form-group">
+                    <button class="button btn-primary" onclick="addPropToTable()">Add Property To Table</button>
+                    <button class="button btn-primary" onclick="createProduct()">Create Product</button>
+                </div>
+
+            </div>
+
+            <div id="Product_Images" class="tab-pane">
+                <div class="col-lg-12 form-group">
+
+                    <table class="table table-sm table-dark" id ="myAdmins">
+                        <thead>
+                        <tr class="table-active">
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Delete from </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr >
+                            <th scope="col">1</th>
+                            <th scope="col">img.jpg</th>
+                            <th scope="col"><button onclick="deleteFromImgs()">Delete</button></th>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <input type="submit" value="Upload All Images" onclick="submitAllFiles()" />
+
+                </div>
+                <div class="col-lg-12 alert alert-primary">
+                    <input type="file"/>
+                    <button onclick="addImageToTable()">Add Image To Table</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

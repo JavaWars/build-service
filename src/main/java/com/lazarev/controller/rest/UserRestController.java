@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api")
 public class UserRestController {
@@ -19,6 +21,7 @@ public class UserRestController {
     @Autowired
     private UserService userService;
 
+    //one of the option
     @RequestMapping(value = "/user",method = RequestMethod.GET)
     public ResponseEntity<Object> user(Long id,String email,String phone){
 
@@ -31,17 +34,15 @@ public class UserRestController {
         return new ResponseEntity<Object>(userService.getAllUsers(),HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/user-searcher",method = RequestMethod.GET)
+    public ResponseEntity<List<User>> findUserByProperties(String email, String phone, String name){
+        return new ResponseEntity<List<User>>(userService.findByParams(email,phone,name),HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/user",method = RequestMethod.POST)
     public ResponseEntity<Object> insert(@RequestBody User user){
         userService.insertNewUser(user);
         return new ResponseEntity<>("user inserted",HttpStatus.OK);
-    }
-
-    @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
-    @RequestMapping(value = "/user",method = RequestMethod.PUT)
-    public ResponseEntity<Object> setUserRole(Role role,Long userId){
-        userService.insertRole(userId,role);
-        return new ResponseEntity<>("todo setting Role for user",HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('USER')")

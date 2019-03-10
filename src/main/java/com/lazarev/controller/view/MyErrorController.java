@@ -22,24 +22,25 @@ public class MyErrorController implements ErrorController {
     @RequestMapping(value = "/error",method = RequestMethod.GET)
     public String error(HttpServletRequest httpRequest, Model model){
 
-        File f=fileInfo.getErrorLogo();
+        File f=fileInfo.getByStorageType("ERR");
         if (f!=null) {
             model.addAttribute("errorLogo", f);
         }
 
         Object status = httpRequest.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
 
+        model.addAttribute("errorMsg", "My default error message");
+
         if (status != null) {
             Integer statusCode = Integer.valueOf(status.toString());
 
-//            if(statusCode == HttpStatus.NOT_FOUND.value()) {
-//                return "error-404";
-//            }
-//            else if(statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
-//                return "error-500";
-//            }
+            if(statusCode == HttpStatus.NOT_FOUND.value()) {
+                model.addAttribute("errorMsg","404");
+            }
+            if(statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
+                model.addAttribute("errorMsg","500");
+            }
         }
-        model.addAttribute("errorMsg", "My error mesage");
         return "error";
     }
 

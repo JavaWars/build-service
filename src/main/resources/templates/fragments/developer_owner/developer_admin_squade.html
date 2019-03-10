@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+<body>
+
+<div class="container" th:fragment="admins_squade">
+    <div>
+        <h1>This is your admins</h1>
+    </div>
+    <table class="table table-sm table-dark" id ="myAdmins">
+        <thead>
+        <tr class="table-active">
+            <th scope="col">#</th>
+            <th scope="col">Email</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Role</th>
+            <th scope="col">Name</th>
+            <th scope="col">SecondName</th>
+            <th scope="col">Oprion</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <div>
+        <h1>Filter for find admin</h1>
+        <div>
+            <label>email</label><input id="search_email"type="text"/>
+            <label>phone</label>
+            <input id="search_phone"type="text"/>
+            <label>name</label>
+            <input id="search_name"type="text"/>
+            <button id ="search_submit" type="button" class="btn-primary" onclick="search_admin_by_example()">Search</button>
+        </div>
+    </div>
+    <div>
+        <h1>This is result of your search</h1>
+    </div>
+    <table class="table table-sm" id ="admins_by_filter">
+        <thead>
+        <tr class="table-active">
+            <th scope="col">#</th>
+            <th scope="col">Email</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Role</th>
+            <th scope="col">Name</th>
+            <th scope="col">SecondName</th>
+            <th scope="col">Oprion</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+</div>
+
+
+</body>
+</html>

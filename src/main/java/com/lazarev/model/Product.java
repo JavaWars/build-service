@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "product")
@@ -14,16 +12,17 @@ public class Product {
 
     private long id;
     private String name;
+    private String productDescription;
     private double price;
     @JsonIgnore
     private Developer developer;
     @JsonIgnore
-    private Set<Category> categoryes;
+    private Set<Category> categoryes=new HashSet<>();
     @JsonIgnore
-    private Map<ProductPropertyName, ProductPropertyValue> productDescription;
+    private Map<ProductPropertyName, ProductPropertyValue> productProperties=new HashMap<>();
     @JsonIgnore
-    private List<Comment> comments;
-//orders for this product
+    private List<Comment> comments=new LinkedList<>();
+
     public Product() {
     }
 
@@ -97,11 +96,42 @@ public class Product {
             inverseJoinColumns = { @JoinColumn(name = "product_property_value_id") }
     )
     @MapKeyJoinColumn(name = "product_property_name_id")
-    public Map<ProductPropertyName, ProductPropertyValue> getProductDescription() {
+    public Map<ProductPropertyName, ProductPropertyValue> getProductProperties() {
+        return productProperties;
+    }
+
+    public void setProductProperties(Map<ProductPropertyName, ProductPropertyValue> productProperties) {
+        this.productProperties = productProperties;
+    }
+
+    public String getProductDescription() {
         return productDescription;
     }
 
-    public void setProductDescription(Map<ProductPropertyName, ProductPropertyValue> productDescription) {
+    public void setProductDescription(String productDescription) {
         this.productDescription = productDescription;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return id == product.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", productDescription='" + productDescription + '\'' +
+                ", price=" + price +
+                '}';
     }
 }

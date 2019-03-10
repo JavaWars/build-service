@@ -3,6 +3,7 @@ package com.lazarev.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table
@@ -32,5 +33,19 @@ public class ProductPropertyValue {
 
     public void setProductValue(String productValue) {
         this.productValue = productValue;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductPropertyValue that = (ProductPropertyValue) o;
+        return id == that.id &&
+                Objects.equals(productValue, that.productValue);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, productValue);
     }
 }

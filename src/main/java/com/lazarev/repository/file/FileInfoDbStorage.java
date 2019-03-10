@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface FileInfoDbStorage extends JpaRepository<File,Long> {
 
-    @Query(value = "select * from file where file.storage_type='MEMORY'",nativeQuery = true)
+    @Query(value = "select * from file where file.storage_type<>'FILE'",nativeQuery = true)
     List<File> findAllInMemory();
 
     @Query(value = "select * from file where file.storage_type='LOGO'",nativeQuery = true)
@@ -18,4 +18,7 @@ public interface FileInfoDbStorage extends JpaRepository<File,Long> {
 
     @Query(value = "select * from file where file.storage_type='ErrorLogo'",nativeQuery = true)
     File getErrorLogo();
+    File getByStorageType(String storageType);
+
+    File findByStorageType(String storageType);
 }

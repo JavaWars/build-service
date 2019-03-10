@@ -1,6 +1,7 @@
 package com.lazarev.service.file;
 
 import com.lazarev.exception.BuildServiceApplicationException;
+import com.lazarev.exception.NoSuchLogoType;
 import com.lazarev.model.File;
 import com.lazarev.repository.file.FileDataStorage;
 import com.lazarev.repository.file.FileInfoDbStorage;
@@ -33,19 +34,46 @@ public class FileServiceImpl implements FileService{
     }
 
 //    @Transactional
-    public void save(MultipartFile multipartFile){
+    public void save(MultipartFile multipartFile,com.lazarev.model.File baseData){
         System.out.println("saving file");
-        //creating info object (will we saved in db)
-        com.lazarev.model.File fileInfo=new File();
         //save original filename
-        fileInfo.setFileName(multipartFile.getOriginalFilename());
+        baseData.setFileName(multipartFile.getOriginalFilename());
         //save addition fileinfo
-        fileInfoDbStorage.save(fileInfo);
-        System.out.println("file info inserted"+fileInfo.getId());
+        fileInfoDbStorage.save(baseData);
+        System.out.println("file info inserted"+baseData.getId());
         //save file on DISK OR in MEMORY
-        fileInfo.setFilePath(fileDataStorage.insert(multipartFile,fileInfo));
+        baseData.setFilePath(fileDataStorage.insert(multipartFile,baseData));
         //update info setting file path on disk
-        fileInfoDbStorage.save(fileInfo);
+        fileInfoDbStorage.save(baseData);
+    }
+
+    public void save(MultipartFile multipartFile,String logoType){
+        System.out.println("logoType"+logoType);
+
+        if ((logoType==null) || (logoType.equalsIgnoreCase("MEMORY"))){File f=new File();f.setStorageType("MEMORY");save(multipartFile,f);}
+        else {
+
+            if ("LOGO".equalsIgnoreCase(logoType)
+                    ||"ERR".equalsIgnoreCase(logoType)
+                    ||"ERR_ACCESS".equalsIgnoreCase(logoType)){
+                File oldFile=fileInfoDbStorage.findByStorageType(logoType);
+                if (oldFile!=null) {
+                    System.out.println("ald file storage type");
+                    fileInfoDbStorage.deleteById(oldFile.getId());
+                    fileDataStorage.delete(oldFile.getId(), oldFile.getFilePath());
+                }
+                else{
+                    oldFile=new File();
+                }
+                File newFile=new File();
+                newFile.setStorageType(oldFile.getStorageType());
+                save(multipartFile,newFile);
+            }
+            else{
+                System.out.println("No such logo type");
+                throw new NoSuchLogoType("No such logo type");
+            }
+        }
     }
 
 //    @Transactional

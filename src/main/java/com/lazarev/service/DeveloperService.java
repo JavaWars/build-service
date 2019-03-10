@@ -1,14 +1,17 @@
 package com.lazarev.service;
 
+import com.lazarev.exception.BuildServiceApplicationException;
 import com.lazarev.model.Developer;
+import com.lazarev.model.Role;
 import com.lazarev.model.User;
 import com.lazarev.repository.DeveloperRepository;
+import com.lazarev.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class DeveloperService {
@@ -21,32 +24,67 @@ public class DeveloperService {
         return developers;
     }
 
-    public void delete(long id) {
-        developerRepository.deleteById(id);
+    public void deleteAdmin(long adminId, long userIdWhoWandToDelete) {
+
+        Developer d=developerRepository.findByUserId(userIdWhoWandToDelete);//by owner id
+        d.removeAdmin(userRepository.getOne(adminId));
+        System.out.println(d.getDeveloperAdminsSquade());
+        developerRepository.save(d);
+        developerRepository.flush();
+
+        //back user status from admin to user
+        User freeDobby=userRepository.getOne(adminId);
+        freeDobby.setRole(Role.USER);
+        freeDobby.setD(null);
+        userRepository.save(freeDobby);
     }
+
+    @Autowired
+    UserRepository userRepository;
 
     public void insert(Developer developer, User founder) {
-        Calendar cal = Calendar.getInstance();
-        developer.setFoundation(cal.getTime());
+        System.out.println("inserting developer"+developer);
 
-        developer.setFounder(founder);
-        //// TODO: 06.03.2019  set founder role admin
-        if (developerRepository.findByPhone(developer.getPhone())==null) {
+        Developer dbDeveloperInfo=developerRepository.findByUserId(founder.getId());
+        if (dbDeveloperInfo==null){
+            Calendar cal = Calendar.getInstance();
+            developer.setFoundation(cal.getTime());
+            developer.setFounder(founder);
             developerRepository.save(developer);
-//            developer.setFounder(founder);
-//            developerRepository.save(developer);
+            founder.setRole(Role.ADMIN);
+            userRepository.save(founder);
         }
-    }
-
-    @Transactional
-    public void update(long id, Developer developer) {
-        Developer d=developerRepository.findById(id).get();
-        developer.setId(d.getId());
-        //not change the foundуr
-        insert(developer,d.getFounder());
+        else{
+            developer.setId(dbDeveloperInfo.getId());
+            developer.setFounder(dbDeveloperInfo.getFounder());
+            developerRepository.save(developer);
+        }
     }
 
     public Developer developer(long id) {
         return developerRepository.findById(id).get();
+    }
+
+    public Developer getById(Long id){
+        return developerRepository.findByUserId(id);//userRepository.getById(id);
+    }
+
+    public void setNewAdminForDeveloper(Long newAdminId, User currentUser) {
+        User newAdmin=userRepository.getOne(newAdminId);
+        if (newAdmin.getRole()!=Role.USER){
+            throw new BuildServiceApplicationException("Incorrect user role for setting like admin (user already admin or doues not exist)");
+        }
+        else{
+            newAdmin.setRole(Role.ADMIN);
+            userRepository.save(newAdmin);
+            Developer d=developerRepository.findByUserId(currentUser.getId());
+            d.addAdmin(newAdmin);
+            newAdmin.setD(d);
+            developerRepository.save(d);
+        }
+    }
+
+    public Set<User> getAdminsForDeveloper(long developerOwnerId) {
+        return developerRepository.findByUserId(developerOwnerId).getDeveloperAdminsSquade();
     }
 }

@@ -49,8 +49,8 @@ public class Category {
 
     @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinTable(
-            name = "Developer_Product",
-            joinColumns = { @JoinColumn(name = "developer_id") },
+            name = "Product_Category",
+            joinColumns = { @JoinColumn(name = "category_id") },
             inverseJoinColumns = { @JoinColumn(name = "product_id") }
     )
     public Set<Product> getProductsInCategory() {

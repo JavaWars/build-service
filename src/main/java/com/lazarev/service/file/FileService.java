@@ -11,7 +11,7 @@ import java.util.List;
 public interface FileService {
     Pair<File,byte[]> getById(Long fileId);
     boolean exist(Long fileId);
-    void save(MultipartFile multipartFile);
+    void save(MultipartFile multipartFile,com.lazarev.model.File baseData);
     void delete(Long fileId);
 
 }
