@@ -9,28 +9,46 @@
 
 
 <form onsubmit="createDeveloper()" th:fragment="developer_total">
-    <div>
-        Create your own company and start make money
-    </div>
     <div class="container">
-        <div>
-            Company Adress
-            <input type="text" id="address" maxlength="100" th:value="@{${developerInfo?.adress}}"/>
+        <div  class="row">
+            <h2>Create your own company and start make money</h2>
         </div>
-        <div>
-            Company phone
-            <input type="number" maxlength="15" id="phone" th:value="@{${developerInfo?.phone}}"/>
-        </div>
-        <div>
-            Company name
-            <input type="text" maxlength="60" id="name" th:value="@{${developerInfo?.name}}"/>
-        </div>
-        <div>
-            Company short history
-            <input type="text" maxlength="200" id="story" th:value="@{${developerInfo?.story}}"/>
-        </div>
-        <div>
-            <button type="submit" class="button btn-primary" >Submit</button>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-6 col-sm-6 col-md-6 form-group">
+                    Company Adress
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6 form-group">
+                    <input type="text" id="address" maxlength="100" th:value="@{${developerInfo?.adress}}"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6 col-sm-6 col-md-6 form-group">
+                    Company phone
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6 form-group">
+                    <input type="number" maxlength="15" id="phone" th:value="@{${developerInfo?.phone}}"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6 col-sm-6 col-md-6 form-group">
+                    Company name
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6 form-group">
+                    <input type="text" maxlength="60" id="name" th:value="@{${developerInfo?.name}}"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6 col-sm-6 col-md-6 form-group">
+                    Company short history
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6 form-group">
+                    <input type="text" maxlength="200" id="story" th:value="@{${developerInfo?.story}}"/>
+                </div>
+            </div>
+            <div>
+                <button type="submit" class="button btn-primary" >Submit</button>
+            </div>
         </div>
     </div>
 </form>

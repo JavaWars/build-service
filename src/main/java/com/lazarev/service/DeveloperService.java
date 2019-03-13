@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -75,8 +76,8 @@ public class DeveloperService {
         return developerRepository.findById(id).get();
     }
 
-    public Developer getById(Long id){
-        return developerRepository.findByUserId(id);//userRepository.getById(id);
+    public Developer getByUserId(Long id){
+        return developerRepository.findByUserId(id);//userRepository.getByUserId(id);
     }
 
     public void setNewAdminForDeveloper(Long newAdminId, User currentUser) {
@@ -100,5 +101,11 @@ public class DeveloperService {
 
     public Developer getDeveloperByCurrentUserId(long id) {
         return developerRepository.findByAdminOrOwner(id);
+    }
+
+    public Developer getDeveloper(Long developer) {
+        Optional<Developer> od=developerRepository.findById(developer);
+        if (od.isPresent()){return od.get();}
+        return null;
     }
 }

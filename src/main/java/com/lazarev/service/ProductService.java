@@ -69,4 +69,18 @@ public class ProductService {
 
         return productRepository.findAllByDeveloper(developerId);
     }
+
+    public List<Product> prepareProductSearchingWithParameters(Long developer, String name, Double minPrice, Double maxPrice, Integer page) {
+
+        if (minPrice==null ){minPrice=0d;}
+        if (maxPrice==null){maxPrice=Double.MAX_VALUE;}
+        if (page==null || page<=0){page=1;}
+        return productRepository.findProducts(developer,name,minPrice,maxPrice,(page-1)*12,page*12);
+    }
+
+    public List<Product> findMostPopularProduct() {
+
+
+        return null;
+    }
 }

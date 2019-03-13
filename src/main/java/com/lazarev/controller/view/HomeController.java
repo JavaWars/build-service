@@ -1,7 +1,9 @@
 package com.lazarev.controller.view;
 
 import com.lazarev.model.File;
+import com.lazarev.repository.ProductRepository;
 import com.lazarev.repository.file.FileInfoDbStorage;
+import com.lazarev.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,9 +16,12 @@ public class HomeController {
     @Autowired
     private FileInfoDbStorage fileInfo;
 
+    @Autowired
+    private ProductService productService;
+
     @RequestMapping(value = {"/", "/home", "index"},method = RequestMethod.GET)
     public String home(Model model) {
-        //// TODO: 05.03.2019 LOAD IMAGES FROM MEMORY
+        model.addAttribute("products",productService.findMostPopularProduct());
         model.addAttribute("carousel_list",fileInfo.getAllByStorageType("MEMORY"));
         return "index";
     }

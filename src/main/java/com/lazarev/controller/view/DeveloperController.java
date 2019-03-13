@@ -27,7 +27,7 @@ public class DeveloperController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User u = authentication == null ? null : (User) authentication.getPrincipal();
 
-        model.addAttribute("developerInfo",developerService.getById(u.getId()));
+        model.addAttribute("developerInfo",developerService.getByUserId(u.getId()));
 
         if (u.getRole()== Role.ADMIN){return "redirect:/developer_management";}
 
@@ -37,7 +37,7 @@ public class DeveloperController {
     @RequestMapping(value = "/developer_management",method = RequestMethod.GET)
     @PreAuthorize("hasAnyRole('ADMIN')")
     public String getManagemantPage(Model model) {
-        model.addAttribute("developerInfo",developerService.getById(UserService.getCurrentUser().getId()));
+        model.addAttribute("developerInfo",developerService.getByUserId(UserService.getCurrentUser().getId()));
         return "admin_pages/developer_management";
     }
 }

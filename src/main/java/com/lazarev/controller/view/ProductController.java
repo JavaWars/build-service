@@ -1,5 +1,6 @@
 package com.lazarev.controller.view;
 
+import com.lazarev.service.DeveloperService;
 import com.lazarev.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,8 +24,27 @@ public class ProductController {
         return "common_pages/product";
     }
 
+    @Autowired
+    private DeveloperService developerService;
+
     @RequestMapping(value = "/products",method = RequestMethod.GET)
-    public String products(){
+    public String products(Long developer,String name,Double minPrice,Double maxPrice,Integer page,Model model){
+        System.out.println("dev "+developer+"name "+name+"minPrice "+minPrice+" max price "+maxPrice+"page "+page);
+
+        model.addAttribute("products",productService.prepareProductSearchingWithParameters(developer,name, minPrice, maxPrice, page));
+
+        if (developer!=null) {
+            model.addAttribute("developer", developerService.getDeveloper(developer));
+        }
+        else{
+            model.addAttribute("developer", null);
+        }
+
+        model.addAttribute("search_page",page);
+        model.addAttribute("search_name",name);
+        model.addAttribute("search_min_price",minPrice);
+        model.addAttribute("search_max_price",maxPrice);
+
         return "common_pages/search_product";
     }
 

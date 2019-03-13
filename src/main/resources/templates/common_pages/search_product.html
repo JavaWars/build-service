@@ -1,12 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"
+          xmlns:th="http://www.w3.org/1999/xhtml">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+
+    <script src="/js/search_product.js"></script>
+
 </head>
 <body>
 
-search product
+<div id="placeForDeveloperAlert">
+</div>
 
+<br><br>
+<div class="container">
+    <div class="row">
+        <div><input id="developerId" type="number" th:value="${developer?.id}" hidden>
+            <input id="search_page" type="number" th:value="${search_page}" hidden></div>
+        <div>
+            Product Name
+        </div>
+        <div>
+            <input name="search_by_name" id="search_by_name" th:value="${search_name}">
+        </div>
+        <div>
+            Min price
+        </div>
+        <div>
+            <input type="number" name="search_min_price" id="search_min_price" th:value="${search_min_price}">
+        </div>
+        <div>
+            Max Price
+        </div>
+        <div>
+            <input  type="number" name="search_max_price" id="search_max_price" th:value="${search_max_price}">
+        </div>
+        <div>
+            <button onclick="searchProduct()">Search</button>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div th:replace="fragments/main_page/main_page_products :: products_fragment"></div>
+</div>
+
+<br>
+<div class="container">
+    <div class="row">
+        <button type="button" id="prevBtn" class="button btn-primary" onclick="decPage()">prevPage</button>
+        Page<label id="pageID"></label>
+        <button type="button" id="nextBtn" class="button btn-primary" onclick="incPage()">nextPage</button>
+    </div>
+</div>
 </body>
 </html>
