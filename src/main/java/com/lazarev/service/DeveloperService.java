@@ -26,32 +26,42 @@ public class DeveloperService {
 
     public void deleteAdmin(long adminId, long userIdWhoWandToDelete) {
 
-        Developer d=developerRepository.findByUserId(userIdWhoWandToDelete);//by owner id
-        d.removeAdmin(userRepository.getOne(adminId));
-        System.out.println(d.getDeveloperAdminsSquade());
-        developerRepository.save(d);
-        developerRepository.flush();
+        if (adminId != userIdWhoWandToDelete) {
+            Developer d = developerRepository.findByUserId(userIdWhoWandToDelete);//by owner id
+            d.removeAdmin(userRepository.getOne(adminId));
+            System.out.println(d.getDeveloperAdminsSquade());
+            developerRepository.save(d);
+            developerRepository.flush();
 
-        //back user status from admin to user
-        User freeDobby=userRepository.getOne(adminId);
-        freeDobby.setRole(Role.USER);
-        freeDobby.setD(null);
-        userRepository.save(freeDobby);
+            //back user status from admin to user
+            User freeDobby = userRepository.getOne(adminId);
+            freeDobby.setRole(Role.USER);
+            freeDobby.setD(null);
+            userRepository.save(freeDobby);
+        }
+        else{
+            throw  new BuildServiceApplicationException("ya cant delete yourself from you company");
+        }
     }
 
     @Autowired
     UserRepository userRepository;
 
-    public void insert(Developer developer, User founder) {
+    public void insert(Developer developer, Long founderId) {
         System.out.println("inserting developer"+developer);
 
-        Developer dbDeveloperInfo=developerRepository.findByUserId(founder.getId());
+        Developer dbDeveloperInfo=developerRepository.findByUserId(founderId);
+
         if (dbDeveloperInfo==null){
             Calendar cal = Calendar.getInstance();
             developer.setFoundation(cal.getTime());
+
+            //update user
+            User founder=userRepository.getOne(founderId);
+            founder.setRole(Role.ADMIN);
+            founder.setD(developer);
             developer.setFounder(founder);
             developerRepository.save(developer);
-            founder.setRole(Role.ADMIN);
             userRepository.save(founder);
         }
         else{
@@ -86,5 +96,9 @@ public class DeveloperService {
 
     public Set<User> getAdminsForDeveloper(long developerOwnerId) {
         return developerRepository.findByUserId(developerOwnerId).getDeveloperAdminsSquade();
+    }
+
+    public Developer getDeveloperByCurrentUserId(long id) {
+        return developerRepository.findByAdminOrOwner(id);
     }
 }

@@ -63,7 +63,6 @@ public class FileMemoryStorage implements FileDataStorage {
     }
 
     public void startupLoading(List<Pair<Long,byte[]> > startupData) {
-        System.out.println(startupData.size());
         for (Pair<Long,byte[]> el:startupData){
             data.put(el.getKey(),el.getValue());
         }

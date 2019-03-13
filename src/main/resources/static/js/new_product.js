@@ -4,10 +4,16 @@ var productProperties=new Map();
 var productImages;
 
 var productId;
-
-window.onload=new function () {
+$(document).ready(function () {
     productId=null;
-};
+
+    // console.log("new product loaded product id is"+$("#productLoadedId").val());
+
+    if ($("#productLoadedId").val()!=""){
+        productId=$("#productLoadedId").val();
+        loadDataFromServerToFormForProduct();
+    }
+});
 
 function addPropToTable() {
 
@@ -52,8 +58,11 @@ function createProduct() {
         productDescription:$("#description").val(),
     };
 
-    var requestJSON = JSON.stringify(productmodel);
+    if (productId>0){
+        productmodel["id"]=productId;
+    }
 
+    var requestJSON = JSON.stringify(productmodel);
     console.log(requestJSON);
 
     $.ajax({
@@ -91,25 +100,83 @@ function insertProperties() {
             },
             data : requestPropJSON,
             success : function(data) {
+                alert("success");
                 console.log("product with properties inserted");
             },
             error : function(data) {
+                alert("Error "+data);
             }
         });
     }
 }
 
-function deleteFromImgs() {
-    console.log("delete from image");
+// var multipleFileUploadInput = document.querySelector('#multipleFileUploadInput');
+var multipleFileUploadError = document.querySelector('#multipleFileUploadError');
+
+function uploadMultipleFiles() {
+
+    var files = document.getElementById("multipleFileUploadInput").files;
+    if (files.length === 0) {
+        multipleFileUploadError.innerHTML = "Please select at least one file or insert product before create image";
+        multipleFileUploadError.style.display = "block";
+    }
+    else {
+
+        var formData = new FormData();
+        for (var index = 0; index < files.length; index++) {
+            formData.append("files", files[index]);
+        }
+
+        var myUrl = "/api/product_img/" + productId;
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", myUrl);
+
+        xhr.onload = function() {
+            console.log(xhr.responseText);
+            var response = JSON.parse(xhr.responseText);
+            if(xhr.status == 200) {
+                multipleFileUploadError.style.display = "none";
+                var content = "<p>All Files Uploaded Successfully</p>";
+
+                multipleFileUploadSuccess.innerHTML = content;
+            } else {
+                multipleFileUploadError.innerHTML = (response && response.message) || "Some Error Occurred";
+            }
+        }
+        xhr.send(formData);
+    }
+}
+
+function deleteFromImgs(imgId) {
+    console.log("delete from image "+imgId);
 
 }
 
-function submitAllFiles() {
-    console.log("submitAllFiles");
+function loadDataFromServerToFormForProduct() {
+
+    console.log("todo load data from server for product (updating purpose)")
+
+    $.get("/api/product/"+productId, function(responseText) {
+
+        console.log(responseText);
+        $("#name").val(responseText['name']);
+        $("#price").val(responseText['price']);
+        $("#description").val(responseText['productDescription']);
+
+        $.get("/api/properties/"+productId, function(prodProp) {
+            // console.log(prodProp);
+            for (const [key, value] of Object.entries(prodProp)) {
+                console.log(key, value);
+                productProperties.set(key,value);
+            }
+            loadPropertiesToTable();
+        });
+
+        //todo  load images
+
+    });
+
 
 }
 
-function addImageToTable() {
-    console.log("addImageToTable");
 
-}

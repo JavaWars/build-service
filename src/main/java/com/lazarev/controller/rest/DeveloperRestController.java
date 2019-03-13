@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/api")
@@ -26,7 +29,9 @@ public class DeveloperRestController {
         System.out.println("create/update developer");
         User founder = UserService.getCurrentUser();
 
-        developerService.insert(developer,founder);
+        developerService.insert(developer,founder.getId());
+        SecurityContextHolder.clearContext();
+
         return new ResponseEntity<>("developer inserted",HttpStatus.CREATED);
     }
 
@@ -46,6 +51,13 @@ public class DeveloperRestController {
     public ResponseEntity<Object> getDeveloperAdmins(){
         return new ResponseEntity<>(developerService.getAdminsForDeveloper(UserService.getCurrentUser().getId()),HttpStatus.OK);
     }
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @RequestMapping(value = "/developer",method = RequestMethod.GET)
+    public ResponseEntity<Object> getDeveloperByMyUserId(){
+        return new ResponseEntity<Object>(developerService.getDeveloperByCurrentUserId(UserService.getCurrentUser().getId()).getId(),HttpStatus.OK);
+    }
+
 
     @PreAuthorize("hasAnyRole('ADMIN','SUPERADMIN')")
     @RequestMapping(value = "/developers_admin/{adminId}",method = RequestMethod.DELETE)

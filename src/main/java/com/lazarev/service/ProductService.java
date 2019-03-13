@@ -22,6 +22,10 @@ public class ProductService {
         return productRepository.findAll();
     }
 
+    public Product findProductById(Long productId){
+        return  productRepository.getOne(productId);
+    }
+
     @Autowired
     DeveloperRepository developerRepository;
 
@@ -47,14 +51,22 @@ public class ProductService {
         }
     }
 
-    public void delete(long developerId, Product product) {
-        Developer d=developerRepository.findById(developerId).get();
+    public void delete( Long productId) {
+
+        Developer d=developerRepository.findByAdminOrOwner(UserService.getCurrentUser().getId());
         if (d==null){
             throw new NoSuchDeveloper("no such developer");
         }
         else{
-            d.getProducts().remove(product);
-            developerRepository.save(d);
+            Product p=productRepository.getOne(productId);
+//            d.getProducts().remove(p);
+//            developerRepository.save(d);
+            productRepository.delete(p);
         }
+    }
+
+    public List<Product> findProductsByDeveloperId(Long developerId) {
+
+        return productRepository.findAllByDeveloper(developerId);
     }
 }

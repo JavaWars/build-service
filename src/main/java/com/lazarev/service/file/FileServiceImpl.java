@@ -64,6 +64,7 @@ public class FileServiceImpl implements FileService{
                 }
                 else{
                     oldFile=new File();
+                    oldFile.setStorageType(logoType);
                 }
                 File newFile=new File();
                 newFile.setStorageType(oldFile.getStorageType());

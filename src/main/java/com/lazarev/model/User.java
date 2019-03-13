@@ -133,7 +133,7 @@ public class User
         this.userOrders = userOrders;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToOne(cascade = {CascadeType.MERGE},fetch = FetchType.LAZY)
     @JoinTable(name = "developer_admin",
             joinColumns = { @JoinColumn(name = "user_id") },
             inverseJoinColumns = { @JoinColumn(name = "developer_id") }

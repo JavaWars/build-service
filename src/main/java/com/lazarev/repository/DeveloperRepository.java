@@ -21,7 +21,7 @@ public interface DeveloperRepository extends JpaRepository<Developer,Long> {
 
 @Query(nativeQuery = true,
 value = "SELECT developers.* FROM developers , developer_admin\n" +
-        "WHERE  ( (developers.user_id=:id)or (developer_admin.user_id=:id) )\n" +
+        "WHERE  ( (developers.user_id=:id)or (developer_admin.user_id=:id) ) and developers.developer_id=developer_admin.developer_id\n" +
         "GROUP BY developer_id\n")
     Developer findByAdminOrOwner(long id);
 }

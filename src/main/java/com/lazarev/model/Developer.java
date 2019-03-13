@@ -106,7 +106,7 @@ public class Developer {
     }
 
 //    @NotBlank
-    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY,cascade = {CascadeType.MERGE})
     @JoinColumn(name = "user_id")
     public User getFounder() {
         return founder;

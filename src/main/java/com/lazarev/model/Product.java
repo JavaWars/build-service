@@ -1,11 +1,12 @@
 package com.lazarev.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.*;
-
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "product")
 public class Product {
@@ -22,6 +23,8 @@ public class Product {
     private Map<ProductPropertyName, ProductPropertyValue> productProperties=new HashMap<>();
     @JsonIgnore
     private List<Comment> comments=new LinkedList<>();
+    @JsonIgnore
+    private List<File> images=new ArrayList<>();
 
     public Product() {
     }
@@ -55,7 +58,7 @@ public class Product {
         this.price = price;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToOne(cascade = {CascadeType.REFRESH},fetch = FetchType.LAZY)
     @JoinColumn(name = "developer_id")
     public Developer getDeveloper() {
         return developer;
@@ -65,7 +68,7 @@ public class Product {
         this.developer = developer;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.REFRESH},fetch = FetchType.LAZY)
     @JoinTable(
             name = "Product_Category",
             joinColumns = { @JoinColumn(name = "product_id") },
@@ -79,7 +82,7 @@ public class Product {
         this.categoryes = categoryes;
     }
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(cascade = {CascadeType.REFRESH},fetch = FetchType.LAZY)
     @JoinColumn(name = "comment_id")
     public List<Comment> getComments() {
         return comments;
@@ -89,7 +92,7 @@ public class Product {
         this.comments = comments;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.REFRESH},fetch = FetchType.LAZY)
     @JoinTable(
             name = "product_property",
             joinColumns = { @JoinColumn(name = "product_id") },
@@ -112,6 +115,21 @@ public class Product {
         this.productDescription = productDescription;
     }
 
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinTable(name = "product_images",
+            joinColumns = { @JoinColumn(name = "product_id") },
+            inverseJoinColumns = { @JoinColumn(name = "file_id") })
+    public List<File> getImages() {
+        return images;
+    }
+
+    public void setImages(List<File> images) {
+        this.images = images;
+    }
+
+    public void addNewImage(File newFile) {
+        images.add(newFile);
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -134,4 +152,6 @@ public class Product {
                 ", price=" + price +
                 '}';
     }
+
+
 }

@@ -17,7 +17,7 @@ public class HomeController {
     @RequestMapping(value = {"/", "/home", "index"},method = RequestMethod.GET)
     public String home(Model model) {
         //// TODO: 05.03.2019 LOAD IMAGES FROM MEMORY
-        model.addAttribute("carousel_list",fileInfo.findAllInMemory());
+        model.addAttribute("carousel_list",fileInfo.getAllByStorageType("MEMORY"));
         return "index";
     }
 

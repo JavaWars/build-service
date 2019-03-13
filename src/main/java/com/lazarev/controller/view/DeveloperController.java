@@ -37,9 +37,7 @@ public class DeveloperController {
     @RequestMapping(value = "/developer_management",method = RequestMethod.GET)
     @PreAuthorize("hasAnyRole('ADMIN')")
     public String getManagemantPage(Model model) {
-
         model.addAttribute("developerInfo",developerService.getById(UserService.getCurrentUser().getId()));
-
         return "admin_pages/developer_management";
     }
 }

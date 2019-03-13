@@ -9,6 +9,7 @@ import com.lazarev.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Service
@@ -56,5 +57,15 @@ public class PropertiesService {
         else{
             throw new BuildServiceApplicationException("This user dont have access to developer product");
         }
+    }
+
+    public Map<String, String> getPropertiesForProduct(Long productId) {
+
+        Map<String,String> result=new HashMap<>();
+
+        for(Map.Entry<ProductPropertyName,ProductPropertyValue> element: productRepository.getOne(productId).getProductProperties().entrySet()){
+            result.put(element.getKey().getName(),element.getValue().getProductValue());
+        }
+        return result;
     }
 }

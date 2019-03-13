@@ -44,7 +44,7 @@ public class FileDiskStorage implements FileDataStorage {
 
     @Override
     public String insert(MultipartFile multipartFile, com.lazarev.model.File fileInfo) {
-        return insert(multipartFile,fileInfo,"");
+        return insert(multipartFile,fileInfo,"disk/");
     }
 
     @Override

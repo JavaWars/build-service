@@ -1,10 +1,7 @@
-window.onload=function () {
 
-    loadMyAdmin();
-};
 
 function loadMyAdmin() {
-
+    console.log("loaded my admins");
     var adr="/api/developers_admin";
 
     $.get(adr, function(responseText) {

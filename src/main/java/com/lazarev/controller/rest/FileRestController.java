@@ -1,7 +1,10 @@
 package com.lazarev.controller.rest;
 
 import com.lazarev.model.File;
+import com.lazarev.model.Product;
 import com.lazarev.repository.file.FileInfoDbStorage;
+import com.lazarev.service.ProductImagesService;
+import com.lazarev.service.ProductService;
 import com.lazarev.service.file.FileService;
 import com.lazarev.service.file.FileServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,11 +58,35 @@ public class FileRestController {
         return new ResponseEntity<Object>("deleted", HttpStatus.OK);
     }
 
+    @Autowired
+    private ProductImagesService productImagesService;
+
     @PreAuthorize("hasAnyRole('SUPERADMIN','ADMIN')")
-    @RequestMapping(value = "/product_img",method = RequestMethod.POST)
-    public ResponseEntity<Object> saveFileDeveloperProductImage(@RequestParam("file") MultipartFile file){
-        diskFileService.save(file,new File());
-        return new ResponseEntity<>("file was saved to disk", HttpStatus.OK);
+    @RequestMapping(value = "/product_img/{productId}",method = RequestMethod.POST)
+    public ResponseEntity<Object> saveFileDeveloperProductImage(@PathVariable("productId") Long productId,@RequestParam("files") MultipartFile[] files){
+
+        productImagesService.saveAllImagesForProduct(files, productId);
+        return new ResponseEntity<>("files was saved to disk", HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/product_img/{imageId}",method = RequestMethod.GET)
+    public ResponseEntity<Object> getProductImage(@PathVariable("imageId") Long imageId){
+
+        return new ResponseEntity<>(diskFileService.getById(imageId).getValue(), HttpStatus.OK);
+    }
+
+    @Autowired
+    private ProductService productService;
+
+    @RequestMapping(value = "/product_root_img/{productId}",method = RequestMethod.GET)
+    public ResponseEntity<Object> getRootProductImage(@PathVariable("productId") Long productId){
+        Product p=productService.findProductById(productId);
+        if (p.getImages().size()>0) {
+            return new ResponseEntity<>(diskFileService.getById(
+                    p.getImages().get(0).getId()//get root images id
+            ).getValue(), HttpStatus.OK);
+        }
+        return new ResponseEntity<Object>("no root product image", HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('SUPERADMIN')")
