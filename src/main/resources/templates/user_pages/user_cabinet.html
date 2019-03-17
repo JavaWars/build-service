@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+<div>
+<h3>User Cabinet</h3>
+    <table class="table table-sm" id ="this_user_orders">
+        <thead>
+        <tr class="table-active">
+            <th scope="col">#</th>
+            <th scope="col">MainImages</th>
+            <th scope="col">ProductName</th>
+            <th scope="col">Price Count 1</th>
+            <th scope="col">CountTotal</th>
+            <th scope="col">Status</th>
+            <th scope="col">Developer link</th>
+            <th scope="col">Product link</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="" th:each="order : ${user_orders}">
+            <th ></th>
+            <th ><img th:src="@{${'/api/product_root_img/'+ order.orderedProduct.id}}"></th>
+            <th th:text="${order.orderedProduct.name}"></th>
+            <th th:text="${order.orderedProduct.price}"></th>
+            <th th:text="${order.count}"></th>
+            <th th:text="${order.status}"></th>
+            <th ><a th:href="@{${'/developer/'+order.orderedProduct.developer.id}}">Developer Link</a></th>
+            <th ><a th:href="@{${'/product/'+order.orderedProduct.id}}">Product Link</a></th>
+        </tr>
+
+        </tbody>
+    </table>
+
+
+</div>
+
+</body>
+</html>

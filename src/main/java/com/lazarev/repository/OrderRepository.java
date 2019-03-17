@@ -10,8 +10,14 @@ import java.util.List;
 @Repository
 public interface OrderRepository extends JpaRepository<Order,Long> {
 
-    //// TODO: 01.03.2019  fix function
-//    @Query(nativeQuery = true,
-//            value = "select * FROM order ")
-//    List<Order> findAllOrdersByUserId(Long userId);
+    @Query(nativeQuery = true,
+            value = "SELECT order_product.*\n" +
+                    "FROM order_product \n" +
+                    "WHERE order_product.user_id = :userId \n")
+    List<Order> findAllOrdersByUserId(Long userId);
+
+    @Query(nativeQuery = true,
+    value = "SELECT order_product.*  FROM order_product , product\n" +
+            "WHERE order_product.product_id = product.product_id and product.developer_id=:developerId\n")
+    List<Order> findForDeveloper(long developerId);
 }

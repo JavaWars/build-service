@@ -108,4 +108,9 @@ public class DeveloperService {
         if (od.isPresent()){return od.get();}
         return null;
     }
+
+    public boolean isCurrentUserOwnerOfCompany() {
+        Optional<Developer> owner=developerRepository.findOwnerOfCompanyByUserId(UserService.getCurrentUser().getId());
+        return owner.isPresent();
+    }
 }

@@ -3,10 +3,11 @@ package com.lazarev.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "order_product")
-public class Order {
+public class Order  {
 
     private long id;
     @JsonIgnore
@@ -14,6 +15,7 @@ public class Order {
     @JsonIgnore
     private Product orderedProduct;
     private Integer count;
+    private String status;
 
     public Order() {
     }
@@ -54,5 +56,23 @@ public class Order {
 
     public void setOrderedProduct(Product orderedProduct) {
         this.orderedProduct = orderedProduct;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", user=" + user +
+                ", orderedProduct=" + orderedProduct +
+                ", count=" + count +
+                '}';
     }
 }

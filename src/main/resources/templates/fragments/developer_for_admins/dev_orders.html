@@ -3,11 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <title>Orders</title>
+
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
 </head>
 <body>
 
 <div th:fragment="dev_orders">
-    Developer orders
+
+    <h3>Orders</h3>
+    <table class="table table-sm" id ="this_user_orders">
+        <thead>
+        <tr class="table-active">
+            <th scope="col">#</th>
+            <th scope="col">ProductName</th>
+            <th scope="col">Price Count 1</th>
+            <th scope="col">Ordered Count</th>
+            <th scope="col">Product link</th>
+            <th scope="col">Status</th>
+            <th scope="col">User adress and phone info</th>
+            <th>Admin operation</th>
+            <!--no items(return money), sent to user,-->
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="" th:each="order : ${dev_order_list}" >
+            <th ></th>
+            <th th:text="${order.orderedProduct.name}"></th>
+            <th th:text="${order.orderedProduct.price}"></th>
+            <th th:text="${order.count}"></th>
+            <th ><a th:href="@{${'/product/'+order.orderedProduct.id}}">Product Link</a></th>
+            <th th:text="${order.status}" ></th>
+            <th th:text="@{${'phone='+order.user.phone+',user address='+order.user.adress}}"></th>
+            <th><button th:if="${order.status==''}" class="button btn-primary" th:onclick="@{${'cancelOrder('+order.id+')'}}">Return Money</button>
+                <button th:if="${order.status==''}" class="button btn-primary" th:onclick="@{${'sentOrder('+order.id+')'}}">Sent</button></th>
+        </tr>
+
+        </tbody>
+    </table>
+
 </div>
 
 </body>

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.*;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
@@ -115,7 +116,7 @@ public class Product {
         this.productDescription = productDescription;
     }
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.REFRESH,fetch = FetchType.LAZY)
     @JoinTable(name = "product_images",
             joinColumns = { @JoinColumn(name = "product_id") },
             inverseJoinColumns = { @JoinColumn(name = "file_id") })
@@ -130,17 +131,21 @@ public class Product {
     public void addNewImage(File newFile) {
         images.add(newFile);
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return id == product.id;
+        return id == product.id &&
+                Double.compare(product.price, price) == 0 &&
+                Objects.equals(name, product.name) &&
+                Objects.equals(productDescription, product.productDescription);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, name, productDescription, price);
     }
 
     @Override

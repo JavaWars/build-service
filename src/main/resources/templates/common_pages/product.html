@@ -18,11 +18,14 @@
 
     <link rel="stylesheet" href="/css/product.css"  type="text/css">
 
+    <script src="/js/product.js"></script>
+
 </head>
 
 <body>
 
 <div class="container">
+    <input id="productId" th:value="${product?.id}" type="text" hidden>
     <div class="card">
         <div class="container-fliud">
             <!--th:each="element : ${carousel_elements}"-->
@@ -40,7 +43,10 @@
 
                 </div>
                 <div class="details col-md-6">
-                    <h3 class="product-title"><div th:text="${product?.name}"></div></h3>
+                    <h3 class="product-title">
+                        <div th:text="${product?.name}">
+                    </div>
+                    </h3>
                     <div class="rating">
                         <div class="stars">
                             <span class="fa fa-star checked"></span>
@@ -55,7 +61,7 @@
                     <h4 class="price">current price: <span th:text="${product?.price}"></span></h4>
                     <p class="vote"><strong>91%</strong> of buyers enjoyed this product! <strong>(87 votes)</strong></p>
                     <div class="action">
-                        <button class="add-to-cart btn btn-default" type="button">add to cart</button>
+                        <button class="add-to-cart btn btn-default" type="button" onclick="addToCart()">add to cart</button>
                         <button class="like btn btn-default" type="button"><span class="fa fa-heart"></span></button>
                     </div>
                 </div>

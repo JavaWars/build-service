@@ -3,6 +3,7 @@ package com.lazarev.controller.view;
 import com.lazarev.model.Role;
 import com.lazarev.model.User;
 import com.lazarev.service.DeveloperService;
+import com.lazarev.service.OrderService;
 import com.lazarev.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -34,10 +35,18 @@ public class DeveloperController {
         return "common_pages/become_developer";
     }
 
+
+    @Autowired
+    private OrderService orderService;
+
     @RequestMapping(value = "/developer_management",method = RequestMethod.GET)
     @PreAuthorize("hasAnyRole('ADMIN')")
     public String getManagemantPage(Model model) {
+
         model.addAttribute("developerInfo",developerService.getByUserId(UserService.getCurrentUser().getId()));
+        model.addAttribute("dev_order_list",orderService.getOrdersByCurrentDeveloper(developerService.getDeveloperByCurrentUserId(UserService.getCurrentUser().getId()).getId()));
+        model.addAttribute("isOwner",developerService.isCurrentUserOwnerOfCompany());
         return "admin_pages/developer_management";
     }
+
 }

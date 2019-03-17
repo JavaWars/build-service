@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+    <script src="/js/cart.js"></script>
+</head>
+<body>
+
+Cart
+
+<div>
+
+    <table class="table table-sm" id ="cart_table">
+        <thead>
+        <tr class="table-active">
+            <th scope="col">#</th>
+            <th scope="col">Product</th>
+            <th scope="col">Count</th>
+            <th scope="col">Price</th>
+            <th scope="col">TotalPrice</th>
+            <th scope="col">Del</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr  th:each="order : ${cart_elements}" th:id ="@{${'p_'+order?.orderedProduct?.id}}">
+            <th ></th>
+            <th th:text="${order?.orderedProduct?.name}"></th>
+            <th ><input type="number" th:id ="@{${'order_product_number_'+order?.orderedProduct?.id}}" min="1" th:onchange="@{${'changeProductCount('+ order?.orderedProduct?.id+')'}}" th:value="${order?.count}"></th>
+            <th th:text="${order?.orderedProduct?.price}" th:id ="@{${'order_product_price_'+order?.orderedProduct?.id}}"></th>
+            <th th:text="@{${order?.count*order?.orderedProduct?.price}}" th:id ="@{${'order_product_total_price_'+order?.orderedProduct?.id}}"></th>
+            <th ><button th:onclick="@{${'deleteFromCart('+ order?.orderedProduct?.id+')'}}">Delete from cart</button></th>
+        </tr>
+        </tbody>
+    </table>
+    <!--cart_elements-->
+    <input type="number" th:value="${tatal_price}" id="tatal_price">
+    <button type="button" class="button btn-primary" onclick="orderProducts()">Order</button>
+
+</div>
+
+</body>
+</html>
